@@ -1,8 +1,15 @@
 {
-  "tasks": [
+  "tasks": [],
+  "finishedTasks": [
     {
-      "id": 1,
-      "task_name": "Task 1"
+      "id": 3,
+      "task_name": "Task 1",
+      "isFinished": true
+    },
+    {
+      "id": 4,
+      "task_name": "Task 3",
+      "isFinished": true
     }
   ]
 }
