@@ -2,47 +2,55 @@
     <div class="container bg-light">
         <div class="row mt-4" style="height: 500px;">
             <div class="col"></div>
-            <div class="col-md-6 bg-white shadow">
+            <div class="col-md-10 bg-white shadow border-1">
                 <div class="card bg-warning mt-4">
                     <h4 class="text-white ps-3 py2 pb-2">To do list</h4>
                 </div>
+                
                 <div class="shadow">
                     <div class="input-group p-4">
-                        <input type="text" class="form-control" placeholder="Enter task " name="task" [(ngModel)]="addTaskValue">
+                        <input type="text" class="form-control" placeholder="Enter new task" name="task" [(ngModel)]="addTaskValue">
                         <button class="btn btn-outline-success" type="button" (click)="addTask()">+</button>
                     </div>   
                 </div>
-                
-                <h4 class="text-primary mt-4">Task: </h4>
-
-                <div style="overflow-y: auto; height: 350px;">
-                    <div class="m-3" *ngFor="let task of taskArr">
-                        <div class="input-group row ps-3" id="tasks">
-                            <div class="card col-md-10 border-0">{{task.task_name}}</div>
-                            <button class="btn btn-outline-primary col" type="button" data-bs-target="#exampleModal" data-bs-toggle="modal" (click)="call(task)">E</button>
-                            <button class="btn btn-outline-danger col" type="button" (click)="deleteTask(task)">X</button>
+                <div class="row" cdkDropListGroup>
+                    <div class="col">
+                        <h4 class="text-primary mt-2">Task: </h4>
+                        <div 
+                            style="overflow-y: auto; height: 350px;" 
+                            cdkDropList
+                            #tasksList="cdkDropList"
+                            [cdkDropListData]= "taskArr"
+                            (cdkDropListDropped)="drop($event)">
+                            <div class="m-2" *ngFor="let task of taskArr">
+                                <div class="input-group row ps-3" id="tasks" cdkDrag>
+                                    <div class="card col-md-10 border-1">{{task.task_name}}</div>
+                                    <button class="btn btn-outline-primary col-md-1" type="button" data-bs-target="#exampleModal" data-bs-toggle="modal" (click)="call(task)">E</button>
+                                    <button class="btn btn-outline-danger col" type="button" (click)="deleteTask(task)">X</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col">
+                        <h4 class="text-primary mt-2">Finished: </h4>
+                        <div 
+                            style="overflow-y: auto; height: 350px;" 
+                            cdkDropList 
+                            #finishedList="cdkDropList"
+                            [cdkDropListData]="finishedTasks"
+                            (cdkDropListDropped)="drop($event)">
+                            <div class="m-2" *ngFor="let task of finishedTasks">
+                                <div class="input-group row ps-3" cdkDrag>
+                                    <div class="card col-md-10 border-1-success text-success">{{task.task_name}}</div>
+                                    <button class="btn btn-outline-danger col" type="button" (click)="deleteFinished(task)">X</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-              <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit task</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                        <input type="text" class="form-control" placeholder="Enter task" name="task" [(ngModel)]="editTaskValue">
-                        </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" (click)="editTask()" data-bs-dismiss="modal">Save changes</button>
-                        </div>
-                    </div>
-                    </div>
-                </div>
+                <app-popupmodal [editTaskValue]="taskObj.task_name" [taskObj]="taskObj"></app-popupmodal>
 
             </div>
             <div class="col"></div>
